@@ -41,6 +41,7 @@ void Test::sayHello(){
   printf("Hi, my name is test\n");
 }
 
+#include "config.h"
 #ifdef HAVE_EMSCRIPTEN
 #include <emscripten/bind.h>
 EMSCRIPTEN_BINDINGS(Test_ex) {
