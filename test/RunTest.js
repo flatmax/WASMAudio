@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 // Copyright (c) 2017 The WASM audio Authors. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -26,24 +28,9 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#ifndef TEST_H_
-#define TEST_H_
+"use strict";
 
-/** Class to test the wasm setup
-*/
-class Test {
-public:
-  /** Constructor
-  */
-  Test();
+var libwasmaudio = require('../src/.libs/libwasmaudio');
 
-  /** Destructor
-  */
-  ~Test();
-
-  /** Make this class say hello to console
-  */
-  void sayHello();
-};
-
-#endif // TEST_H_
+console.log('nodejs test currently not working. Webapp to come.');
+return;

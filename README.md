@@ -2,16 +2,23 @@
 
 Trying to work out how to get audio going with WASM
 
-Initial steps to setup the C++ system ... WASM later
-
-# Initial Setup (native C++)
+# Initial Setup
 
 ./tools/autotools.sh
 
-# configuring (native C++)
-
+# configuring
+### native C++
 ./configure
 
-# building (native C++)
+### WASM
+emconfigure ./configure
 
+# building
+### native C++
 make
+### WASM
+emmake make
+
+# installing
+
+Really ?

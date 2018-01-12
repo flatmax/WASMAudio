@@ -22,3 +22,7 @@ a.out
 stamp-h1
 test/*Test
 m4
+a.out.js
+a.out.js.mem
+contest.*
+confdefs.h
