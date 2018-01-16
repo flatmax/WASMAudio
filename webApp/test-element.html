@@ -3,7 +3,7 @@
 
 <dom-module id="test-element">
   <template>
-      <paper-button raised on-tap="runTest">press and check your console</paper-button>
+      <paper-button raised on-tap="runAudioWorklet">press and check your console</paper-button>
   </template>
 
   <script>
@@ -42,11 +42,17 @@
         this.loadWASM('libwasmaudio.js', function(){me.libwasmaudio=libwasmaudio({onRuntimeInitialized:console.log('libwasmaudio initalised')});}); // load in the wasm file
       }
 
-      /** test a WASM class
+      /** Run the audio worklet processor
       */
-      runTest(){
-        let test = new this.libwasmaudio.Test();
-        test.sayHello();
+      runAudioWorklet(){
+        if (this.context==null)
+          this.context = new AudioContext();
+        this.context.audioWorklet.addModule('../AudioProcessor.js').then(() => {
+          let oscillator = new OscillatorNode(this.context);
+          let audioWorkletNode = new AudioWorkletNode(this.context, 'audio-processor');
+          oscillator.connect(audioWorkletNode).connect(this.context.destination);
+          oscillator.start();
+        });
       }
     }
 
