@@ -3,7 +3,7 @@
 
 <dom-module id="test-element">
   <template>
-      <paper-button raised on-tap="runAudioWorklet">press and check your console</paper-button>
+    <paper-button raised on-tap="runAudioWorklet">run worklet and check your console</paper-button>
   </template>
 
   <script>
@@ -22,6 +22,10 @@
         };
       }
 
+      connectedCallback(){
+        super.connectedCallback();
+      }
+
       /** Load a js file which will load a WASM file.
         \param url the source of the js file, which has to be able to find the wasm file.
         \param onLoadFn The function to run once the script has loaded.
@@ -31,15 +35,6 @@
         script.onload = onLoadFn;
         script.src = url;
         document.head.appendChild(script);
-      }
-
-      /**
-      * Once connected ...
-      */
-      connectedCallback() {
-        super.connectedCallback();
-        var me=this;
-        this.loadWASM('libwasmaudio.js', function(){me.libwasmaudio=libwasmaudio({onRuntimeInitialized:console.log('libwasmaudio initalised')});}); // load in the wasm file
       }
 
       /** Run the audio worklet processor

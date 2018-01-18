@@ -26,27 +26,51 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-/** A simple js based audio processor for testing AudioWorkletProcessor - before
-integrating in WASM.
+/** A simple js based audio processor for testing AudioWorkletProcessor.
+The AudioWorkletProcessor's scope is too tight to srouce WASM from a url.
+This version doesn't work.
 */
 class AudioProcessor extends AudioWorkletProcessor {
 
-  constructor() {
-    // The super constructor call is required.
+  constructor(){
     super();
-    console.log('AudioProcessor.constructed')
+    // WASM can't be sourced from a url, as there is no docuiment nor window elements.
+    // this.libwasmaudio=libwasmaudio({
+    //   onRuntimeInitialized:console.log('libwasmaudio initalised'),
+    //   // 'print': function(text) { console.log('stdout: ' + text) },
+    //   // 'printErr': function(text) { console.log('stderr: ' + text) }
+    // });
   }
 
-  process(inputs, outputs) {
-    let input = inputs[0];
-    let output = outputs[0];
-    for (let channel = 0; channel < input.length; ++channel) {
-      let inputChannel = input[channel];
-      let outputChannel = output[channel];
-      for (let i = 0; i < inputChannel.length; ++i)
-        outputChannel[i] = inputChannel[i];
-    }
-    return true;
+  /** Load a js file which will load a WASM file.
+    \param url the source of the js file, which has to be able to find the wasm file.
+    \param onLoadFn The function to run once the script has loaded.
+  */
+  static loadWASM(url, onLoadFn){
+    let script = document.createElement('script');
+    script.onload = onLoadFn;
+    script.src = url;
+    document.head.appendChild(script);
+  }
+
+  static instantiateWASM(document){
+    return new Promise( (resolve, reject) => {
+      try {
+        let me=this;
+        this.loadWASM('libwasmaudio.js', function(){
+          me.libwasmaudio=libwasmaudio({onRuntimeInitialized:console.log('libwasmaudio initalised')});
+        }); // load in the wasm file
+        resolve();
+      } catch (e) {
+        console.log(e);
+        reject(e);
+      }
+    });
+  }
+
+  process(inputs, outputs, parameters) {
+    console.log('processed once and exiting - no WASM')
+    return false;
   }
 }
 

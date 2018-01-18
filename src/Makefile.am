@@ -28,7 +28,7 @@
 
 lib_LTLIBRARIES = libwasmaudio.la
 
-libwasmaudio_la_SOURCES = Test.C
+libwasmaudio_la_SOURCES = Test.C Audio.C
 libwasmaudio_la_CPPFLAGS = -I$(top_srcdir)/include
 libwasmaudio_la_LDFLAGS =  -version-info $(LT_CURRENT) -release $(LT_RELEASE)
 
