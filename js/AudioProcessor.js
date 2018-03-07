@@ -31,45 +31,12 @@ The AudioWorkletProcessor's scope is too tight to srouce WASM from a url.
 This version doesn't work.
 */
 class AudioProcessor extends AudioWorkletProcessor {
-
   constructor(){
     super();
-    // WASM can't be sourced from a url, as there is no docuiment nor window elements.
-    // this.libwasmaudio=libwasmaudio({
-    //   onRuntimeInitialized:console.log('libwasmaudio initalised'),
-    //   // 'print': function(text) { console.log('stdout: ' + text) },
-    //   // 'printErr': function(text) { console.log('stderr: ' + text) }
-    // });
-  }
-
-  /** Load a js file which will load a WASM file.
-    \param url the source of the js file, which has to be able to find the wasm file.
-    \param onLoadFn The function to run once the script has loaded.
-  */
-  static loadWASM(url, onLoadFn){
-    let script = document.createElement('script');
-    script.onload = onLoadFn;
-    script.src = url;
-    document.head.appendChild(script);
-  }
-
-  static instantiateWASM(document){
-    return new Promise( (resolve, reject) => {
-      try {
-        let me=this;
-        this.loadWASM('libwasmaudio.js', function(){
-          me.libwasmaudio=libwasmaudio({onRuntimeInitialized:console.log('libwasmaudio initalised')});
-        }); // load in the wasm file
-        resolve();
-      } catch (e) {
-        console.log(e);
-        reject(e);
-      }
-    });
   }
 
   process(inputs, outputs, parameters) {
-    console.log('processed once and exiting - no WASM')
+    console.log('processed once and exiting')
     return false;
   }
 }
