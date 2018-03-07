@@ -26,6 +26,8 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+console.log('in post of AudioProcessor.js')
+
 /** A simple js based audio processor for testing AudioWorkletProcessor.
 The AudioWorkletProcessor's scope is too tight to srouce WASM from a url.
 This version doesn't work.

@@ -26,6 +26,8 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+console.log('in pre.js of WASM js script')
+
 Module['ENVIRONMENT'] = 'WORKER';
 
 Module['onRuntimeInitialized'] = function(){console.log('libwasmaudio initalised')};
