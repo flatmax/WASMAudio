@@ -27,3 +27,5 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 Module['ENVIRONMENT'] = 'WORKER';
+
+Module['onRuntimeInitialized'] = function(){console.log('libwasmaudio initalised')};

@@ -33,6 +33,7 @@ This version doesn't work.
 class AudioProcessor extends AudioWorkletProcessor {
   constructor(){
     super();
+    console.log('AudioProcessor constructor exit')
   }
 
   process(inputs, outputs, parameters) {

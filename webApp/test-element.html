@@ -42,7 +42,7 @@
       runAudioWorklet(){
         if (this.context==null)
           this.context = new AudioContext();
-        this.context.audioWorklet.addModule('../AudioProcessor.js').then(() => {
+        this.context.audioWorklet.addModule('libwasmaudio.js').then(() => {
           let oscillator = new OscillatorNode(this.context);
           let audioWorkletNode = new AudioWorkletNode(this.context, 'audio-processor');
           oscillator.connect(audioWorkletNode).connect(this.context.destination);
