@@ -30,4 +30,4 @@ console.log('in pre.js of WASM js script')
 
 Module['ENVIRONMENT'] = 'WORKER';
 
-Module['onRuntimeInitialized'] = function(){console.log('libwasmaudio initalised')};
+Module['onRuntimeInitialized'] = function(){console.log('WASM initalised')};
