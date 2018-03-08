@@ -26,8 +26,6 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-console.log('in post of AudioProcessor.js')
-
 /** A simple js based audio processor for testing AudioWorkletProcessor.
 The AudioWorkletProcessor's scope is too tight to srouce WASM from a url.
 This version doesn't work.
@@ -35,10 +33,39 @@ This version doesn't work.
 class AudioProcessor extends AudioWorkletProcessor {
   constructor(){
     super();
+    this.audioProcessor = new Module.Audio;
+    console.log(this.audioProcessor)
     console.log('AudioProcessor constructor exit')
   }
 
+  mallocHEAP(audioMatrix, heapName){
+    let Nb=audioMatrix[0][0].byteLength;
+    // resize memory if required
+    if (this[heapName]==null || this[heapName].length!=audioMatrix.length*Nb){
+      if (this[heapName]!=null)
+        Module.free(this[heapName]);
+      this[heapName] = Module._malloc(Nb);
+    }
+    return Nb;
+  }
+
   process(inputs, outputs, parameters) {
+    let Nb = this.mallocHEAP(outputs, 'outBufs');
+    Nb = this.mallocHEAP(inputs, 'inBufs');
+    for (var i=0; i<inputs[0].length; i++)
+      Module.HEAPF32.set(inputs[0][i], this.inBufs>>2);
+
+    // console.log(inputs[0][0])
+    // console.log(this.inBufs)
+    //
+    // console.log(inputs.length)
+    // console.log(inputs[0].length)
+    // console.log(inputs[0][0].length)
+    //
+    // console.log(HEAPF32.subarray(this.inBufs/4, (this.inBufs+Nb)/4))
+
+    this.audioProcessor.process(this.inBufs, inputs[0].length, inputs[0][0].length, this.outBufs, outputs[0].length, outputs[0][0].length);
+
     console.log('processed once and exiting')
     return false;
   }

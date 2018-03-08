@@ -37,8 +37,12 @@ Audio::~Audio(){
   printf("Audio destructed\n");
 }
 
-bool Audio::process(double *input, double *output){
-  printf("Audio::process\n");
+bool Audio::process(intptr_t input, unsigned int Min, unsigned int Nin, intptr_t output, unsigned int Mout, unsigned int Nout){
+  float *in=(float*)input;//, *out = (float*)&output;
+  // printf("Audio::process : Min : %d, Nin %d, Mout %d, Nout %d\n", Min, Nin, Mout, Nout);
+  // for (int i=0; i<Nin; i++)
+  //   printf("%f \t",in[i]);
+  // printf("\ndone\n");
   return true;
 }
 

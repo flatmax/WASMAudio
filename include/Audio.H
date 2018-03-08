@@ -30,6 +30,7 @@
 #define AUDIO_H_
 
 #include "config.h"
+#include <stdint.h>
 
 /** Class to test the wasm setup
 */
@@ -46,7 +47,7 @@ public:
 #ifdef HAVE_EMSCRIPTEN
   /** process
   */
-  bool process(double *input, double *output);
+  bool process(intptr_t input, unsigned int Min, unsigned int Nin, intptr_t output, unsigned int Mout, unsigned int Nout);
 #endif
 };
 
