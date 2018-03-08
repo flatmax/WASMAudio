@@ -38,36 +38,41 @@ class AudioProcessor extends AudioWorkletProcessor {
     console.log('AudioProcessor constructor exit')
   }
 
+  /** malloc a WASM heap based on an audio matrix size. If the audio buffer
+  channel count or frame count is changed, then free and malloc again.
+  We remember size here to check if the heap frame count is different.
+  \param audioMatrix Array[Array[Float32Array]]
+  \param heapName For example 'inBufs'
+  */
   mallocHEAP(audioMatrix, heapName){
     let Nb=audioMatrix[0][0].byteLength;
     // resize memory if required
-    if (this[heapName]==null || this[heapName].length!=audioMatrix.length*Nb){
+    if (this[heapName]==null || this[heapName+'Size']!=audioMatrix.length*Nb){
       if (this[heapName]!=null)
         libwasmaudio.free(this[heapName]);
       this[heapName] = libwasmaudio._malloc(Nb);
+      this[heapName+'Size']=Nb;
     }
     return Nb;
   }
 
+  /** Given audio input, call the WASM process method and load the output.
+  \param inputs The AudioWorklet input audio data
+  \param outputs The AudioWorklet output audio data
+  \param paramteres The AudioWorklet parameters (currently unused)
+  */
   process(inputs, outputs, parameters) {
-    let Nb = this.mallocHEAP(outputs, 'outBufs');
-    Nb = this.mallocHEAP(inputs, 'inBufs');
-    for (var i=0; i<inputs[0].length; i++)
+    let Nb = this.mallocHEAP(inputs, 'inBufs'); // resize the heap if necessary
+    for (var i=0; i<inputs[0].length; i++) // load the AudioWorklet data into the WASM heap
       libwasmaudio.HEAPF32.set(inputs[0][i], this.inBufs>>2);
 
-    // console.log(inputs[0][0])
-    // console.log(this.inBufs)
-    //
-    // console.log(inputs.length)
-    // console.log(inputs[0].length)
-    // console.log(inputs[0][0].length)
-    //
-    // console.log(HEAPF32.subarray(this.inBufs/4, (this.inBufs+Nb)/4))
+    Nb = this.mallocHEAP(outputs, 'outBufs'); // resize the heap if necessary
 
-    this.audioProcessor.process(this.inBufs, inputs[0].length, inputs[0][0].length, this.outBufs, outputs[0].length, outputs[0][0].length);
-
-    console.log('processed once and exiting')
-    return false;
+    // process the audio
+    let ret=this.audioProcessor.process(this.inBufs, inputs[0].length, inputs[0][0].length, this.outBufs, outputs[0].length, outputs[0][0].length);
+    if (ret==true) // if processing was good, load the output audio
+      outputs[0][0].set(HEAPF32.subarray(this.outBufs/4, (this.outBufs+Nb)/4));
+    return ret;
   }
 }
 

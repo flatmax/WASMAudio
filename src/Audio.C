@@ -29,6 +29,8 @@
 #include "Audio.H"
 #include <stdio.h>
 
+#include <Eigen/Dense>
+
 Audio::Audio(){
   printf("Audio constructed\n");
 }
@@ -44,12 +46,12 @@ bool Audio::process(intptr_t input, unsigned int Min, unsigned int Nin, intptr_t
     return false;
   }
 
+  Eigen::Stride<Eigen::Dynamic, Eigen::Dynamic> strideIn(1,Min), strideOut(1,Mout);
+  Eigen::Map<Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic>, Eigen::Unaligned, Eigen::Stride<Eigen::Dynamic, Eigen::Dynamic> >
+                                          inAudio((float*)input, Nin, Min, strideIn),
+                                          outAudio((float*)output, Nout, Mout, strideOut);
 
-
-  // printf("Audio::process : Min : %d, Nin %d, Mout %d, Nout %d\n", Min, Nin, Mout, Nout);
-  for (int i=0; i<Nin; i++)
-    printf("%f \t",in[i]);
-  printf("\ndone\n");
+  outAudio=inAudio; // simply copy the audio over
   return true;
 }
 
