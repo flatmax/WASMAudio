@@ -33,7 +33,7 @@ This version doesn't work.
 class AudioProcessor extends AudioWorkletProcessor {
   constructor(){
     super();
-    this.audioProcessor = new Module.Audio;
+    this.audioProcessor = new libwasmaudio.Audio;
     console.log(this.audioProcessor)
     console.log('AudioProcessor constructor exit')
   }
@@ -43,8 +43,8 @@ class AudioProcessor extends AudioWorkletProcessor {
     // resize memory if required
     if (this[heapName]==null || this[heapName].length!=audioMatrix.length*Nb){
       if (this[heapName]!=null)
-        Module.free(this[heapName]);
-      this[heapName] = Module._malloc(Nb);
+        libwasmaudio.free(this[heapName]);
+      this[heapName] = libwasmaudio._malloc(Nb);
     }
     return Nb;
   }
@@ -53,7 +53,7 @@ class AudioProcessor extends AudioWorkletProcessor {
     let Nb = this.mallocHEAP(outputs, 'outBufs');
     Nb = this.mallocHEAP(inputs, 'inBufs');
     for (var i=0; i<inputs[0].length; i++)
-      Module.HEAPF32.set(inputs[0][i], this.inBufs>>2);
+      libwasmaudio.HEAPF32.set(inputs[0][i], this.inBufs>>2);
 
     // console.log(inputs[0][0])
     // console.log(this.inBufs)

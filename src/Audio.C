@@ -38,11 +38,18 @@ Audio::~Audio(){
 }
 
 bool Audio::process(intptr_t input, unsigned int Min, unsigned int Nin, intptr_t output, unsigned int Mout, unsigned int Nout){
-  float *in=(float*)input;//, *out = (float*)&output;
+  float *in=(float*)input, *out = (float*)output;
+  if (Nin!=Nout){
+    printf("Input and output sample count mismatch : Nin = %d, Nout = %d\n", Nin, Nout);
+    return false;
+  }
+
+
+
   // printf("Audio::process : Min : %d, Nin %d, Mout %d, Nout %d\n", Min, Nin, Mout, Nout);
-  // for (int i=0; i<Nin; i++)
-  //   printf("%f \t",in[i]);
-  // printf("\ndone\n");
+  for (int i=0; i<Nin; i++)
+    printf("%f \t",in[i]);
+  printf("\ndone\n");
   return true;
 }
 
