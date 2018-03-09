@@ -1,6 +1,7 @@
 # WASMAudio
 
-Trying to work out how to get audio going with WASM
+Example project for processing AudioWorklet audio in WASM code.
+
 # Building
 ## Initial Setup
 
