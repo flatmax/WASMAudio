@@ -24,9 +24,13 @@
           this.context = new AudioContext();
         this.context.audioWorklet.addModule('libwasmaudio.js').then(() => {
           let oscillator = new OscillatorNode(this.context);
-          let audioWorkletNode = new AudioWorkletNode(this.context, 'audio-processor');
-          oscillator.connect(audioWorkletNode).connect(this.context.destination);
-          oscillator.start();
+          let audioWorkletNode = new AudioWorkletNode(this.context, 'audio-processor', {'numberOfInputs' : 3, 'numberOfOutputs' : 2 });
+          let merger =  new ChannelMergerNode(this.context, {'numberOfInputs' : 2});
+          // connect the oscillator to the AudioWorkletNode WASM audio processor
+          oscillator.connect(audioWorkletNode, 0, 0).connect(audioWorkletNode, 0, 1);
+          audioWorkletNode.connect(merger, 0, 0) // connect the L + R + destination
+          audioWorkletNode.connect(merger, 1, 1).connect(this.context.destination);
+          oscillator.start(); // start the oscillator
         });
       }
     }

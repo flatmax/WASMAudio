@@ -45,7 +45,13 @@ public:
   virtual ~Audio();
 
 #ifdef HAVE_EMSCRIPTEN
-  /** process
+  /** process method - processes the input audio to the output audio
+  \param input the input audio pointer
+  \param Min the number of input audio channels
+  \param Nin the number of input audio frames (samples)
+  \param output the output audio pointer
+  \param Mout the number of output audio channels
+  \param Nout the number of output audio frames (samples)
   */
   bool process(intptr_t input, unsigned int Min, unsigned int Nin, intptr_t output, unsigned int Mout, unsigned int Nout);
 #endif

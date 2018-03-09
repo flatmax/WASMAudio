@@ -46,12 +46,14 @@ bool Audio::process(intptr_t input, unsigned int Min, unsigned int Nin, intptr_t
     return false;
   }
 
-  Eigen::Stride<Eigen::Dynamic, Eigen::Dynamic> strideIn(1,Min), strideOut(1,Mout);
-  Eigen::Map<Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic>, Eigen::Unaligned, Eigen::Stride<Eigen::Dynamic, Eigen::Dynamic> >
-                                          inAudio((float*)input, Nin, Min, strideIn),
-                                          outAudio((float*)output, Nout, Mout, strideOut);
+  Eigen::Map<Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic>, Eigen::Unaligned >
+                                          inAudio((float*)input, Nin, Min),
+                                          outAudio((float*)output, Nout, Mout);
 
-  outAudio=inAudio; // simply copy the audio over
+  unsigned int M = ((Min<Mout) ? Min : Mout);
+  outAudio.leftCols(M)=inAudio.leftCols(M); // simply copy the audio over
+  if (outAudio.cols()>M)
+    outAudio.rightCols(outAudio.cols()-M).setZero();
   return true;
 }
 
