@@ -34,7 +34,7 @@
         this.oscillator.connect(this.merger, 0, 0) // connect the L + R + destination
         this.oscillator2.connect(this.merger, 0, 1);
         // create the ScriptProcessorNode and connect it to the output of the merged oscillators
-        this.audioProcessorNode = this.createScriptProcessorNode(1024, 3, 2);
+        this.createScriptProcessorNode(1024, 3, 2); // this.audioProcessorNode has been created
         this.merger.connect(this.audioProcessorNode);
         // connect the ScriptProcessorNode to the output destination
         this.audioProcessorNode.connect(this.context.destination);

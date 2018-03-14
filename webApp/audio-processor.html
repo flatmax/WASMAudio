@@ -46,15 +46,16 @@
       document.head.appendChild(script);
     }
 
-    /** Create and return an audio script node which is setup to process events
+    /** Create and return an audio script node which is setup to process events.
+    Upon completion :
+    this.audioProcessorNode is the ScriptProcessorNode setup to handle events
     \param frameCount The number of audio frames in the processing buffer
     \param inCh The number of input audio channels
     \param outCh The number of output audio channels
-    \return The ScriptProcessorNode setup to handle events
     */
     createScriptProcessorNode(frameCount, inCh, outCh){
-      let audioProcessorNode = this.context.createScriptProcessor(frameCount, inCh, outCh);
-      audioProcessorNode.onaudioprocess = this.process.bind(this);
+      this.audioProcessorNode = this.context.createScriptProcessor(frameCount, inCh, outCh);
+      this.audioProcessorNode.onaudioprocess = this.process.bind(this);
       return audioProcessorNode;
     }
 
