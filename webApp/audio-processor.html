@@ -95,6 +95,13 @@
       for (var i=0; i<audioProcessingEvent.outputBuffer.numberOfChannels; i++) // retrieve the AudioWorklet data from the WASM heap
         audioProcessingEvent.outputBuffer.copyToChannel(libwasmaudio.HEAPF32.subarray((this.outBufs+i*Nb)>>2, (this.outBufs+i*Nb+Nb)>>2), i);
     }
+
+    /** Method to stop processing.
+    */
+    stop(){
+      if (this.audioProcessorNode != null)
+        this.audioProcessorNode.disconnect();
+    }
   }
   window.customElements.define(AudioProcessor.is, AudioProcessor);
   </script>
