@@ -1,37 +1,46 @@
 <link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="audio-processor.html">
 
 <dom-module id="test-element">
   <template>
-    <paper-button raised on-tap="runAudioWorklet">run worklet</paper-button>
+    <paper-button raised on-tap="startAudioProcessing">run script node</paper-button>
   </template>
 
   <script>
     /**
      * `test-element`
-     * WASM AudioWorklet tester
+     * WASM Audio ScriptProcessorNode tester
      *
      * @customElement
      * @polymer
      * @demo demo/index.html
      */
-    class TestElement extends Polymer.Element {
+    class TestElement extends AudioProcessor {
       static get is() { return 'test-element'; }
 
-      /** Run the audio worklet processor
+      /** Start the audio processing using the AudioProcessor WASM code
       */
-      runAudioWorklet(){
+      startAudioProcessing(){
+        if (this.audioProcessor == null)
+          this.audioProcessor = new libwasmaudio.Audio;
         if (this.context==null)
           this.context = new AudioContext();
-        this.context.audioWorklet.addModule('libwasmaudio.js').then(() => {
-          let oscillator = new OscillatorNode(this.context);
-          let audioWorkletNode = new AudioWorkletNode(this.context, 'audio-processor', {'numberOfInputs' : 3, 'numberOfOutputs' : 2 });
-          let merger =  new ChannelMergerNode(this.context, {'numberOfInputs' : 2});
-          // connect the oscillator to the AudioWorkletNode WASM audio processor
-          oscillator.connect(audioWorkletNode, 0, 0).connect(audioWorkletNode, 0, 1);
-          audioWorkletNode.connect(merger, 0, 0) // connect the L + R + destination
-          audioWorkletNode.connect(merger, 1, 1).connect(this.context.destination);
-          oscillator.start(); // start the oscillator
-        });
+        // create some oscillators
+        this.oscillator = new OscillatorNode(this.context);
+        this.oscillator2 = new OscillatorNode(this.context);
+        this.oscillator2.frequency.setValueAtTime(1000, this.context.currentTime);
+        // route the oscillators to a stereo stream
+        this.merger =  new ChannelMergerNode(this.context, {'numberOfInputs' : 2});
+        this.oscillator.connect(this.merger, 0, 0) // connect the L + R + destination
+        this.oscillator2.connect(this.merger, 0, 1);
+        // create the ScriptProcessorNode and connect it to the output of the merged oscillators
+        this.audioProcessorNode = this.createScriptProcessorNode(1024, 3, 2);
+        this.merger.connect(this.audioProcessorNode);
+        // connect the ScriptProcessorNode to the output destination
+        this.audioProcessorNode.connect(this.context.destination);
+        // Start the audio system running
+        this.oscillator.start(this.context.currentTime); // start the oscillator
+        this.oscillator2.start(this.context.currentTime); // start the oscillator
       }
     }
 
