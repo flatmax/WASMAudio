@@ -1,5 +1,20 @@
 # WASMAudio
 
+This project exemplifies webassembly (WASM) audio processing.
+If provides both the C++ backend and the webapp.
+
+It has two branches :
+ScriptProcessorNode - The soon to be depreciated method for processing audio in the browser
+AudioWorklet - The Worklet approach to processing audio in the browser.
+
+To use :
+```
+git checkout ScriptProcessorNode
+```
+OR
+```
+git checkout AudioWorklet
+```
 Example project for processing AudioWorklet audio in WASM code.
 
 # Building
