@@ -35,3 +35,9 @@ polymer install
 ### running
 
 polymer serve
+
+# Reference
+
+The original mad chops coder AU
+![mad chops coder AU icon](https://raw.githubusercontent.com/flatmax/WASMAudio/master/madChopsCoderAu.png)
+
