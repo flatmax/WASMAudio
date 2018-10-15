@@ -1,4 +1,4 @@
-<!--
+/**
 Copyright (c) 2017-2018 The WASM audio Authors. All rights reserved.
 
  Redistribution and use in source and binary forms, with or without
@@ -26,18 +26,14 @@ Copyright (c) 2017-2018 The WASM audio Authors. All rights reserved.
  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
--->
+*/
 
-<link rel="import" href="../polymer/polymer-element.html">
+import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
 
-<dom-module id="audio-processor">
-
-  <script>
   /** A simple js based audio processor for running WASM audio processing
   using the ScriptProcessorNode.
   */
-  class AudioProcessor extends Polymer.Element {
-    static get is() { return 'audio-processor'; }
+  class AudioProcessor extends PolymerElement {
 
     /** Upon creation get the WASM loaded and compiling.
     */
@@ -105,6 +101,4 @@ Copyright (c) 2017-2018 The WASM audio Authors. All rights reserved.
         this.audioProcessorNode.disconnect();
     }
   }
-  window.customElements.define(AudioProcessor.is, AudioProcessor);
-  </script>
-</dom-module>
+  window.customElements.define('audio-processor', AudioProcessor);

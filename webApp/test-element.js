@@ -1,4 +1,4 @@
-<!--
+/**
 Copyright (c) 2017-2018 The WASM audio Authors. All rights reserved.
 
  Redistribution and use in source and binary forms, with or without
@@ -26,17 +26,13 @@ Copyright (c) 2017-2018 The WASM audio Authors. All rights reserved.
  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
--->
+*/
+
+import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
 
 <link rel="import" href="../paper-button/paper-button.html">
 <link rel="import" href="audio-processor.html">
 
-<dom-module id="test-element">
-  <template>
-    <paper-button raised on-tap="startAudioProcessing">run script node</paper-button>
-  </template>
-
-  <script>
     /**
      * `test-element`
      * WASM Audio ScriptProcessorNode tester
@@ -46,8 +42,11 @@ Copyright (c) 2017-2018 The WASM audio Authors. All rights reserved.
      * @demo demo/index.html
      */
     class TestElement extends AudioProcessor {
-      static get is() { return 'test-element'; }
-
+  static get template() {
+    return html`
+    <paper-button raised on-tap="startAudioProcessing">run script node</paper-button>
+    `;
+  }
       /** Start the audio processing using the AudioProcessor WASM code
       */
       startAudioProcessing(){
@@ -74,6 +73,4 @@ Copyright (c) 2017-2018 The WASM audio Authors. All rights reserved.
       }
     }
 
-    window.customElements.define(TestElement.is, TestElement);
-  </script>
-</dom-module>
+window.customElements.define('test-element', TestElement);
