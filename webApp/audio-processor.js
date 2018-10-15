@@ -28,77 +28,77 @@ Copyright (c) 2017-2018 The WASM audio Authors. All rights reserved.
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
+import {PolymerElement} from '@polymer/polymer/polymer-element.js';
 
-  /** A simple js based audio processor for running WASM audio processing
-  using the ScriptProcessorNode.
+/** A simple js based audio processor for running WASM audio processing
+using the ScriptProcessorNode.
+*/
+export class AudioProcessor extends PolymerElement {
+
+  /** Upon creation get the WASM loaded and compiling.
   */
-  class AudioProcessor extends PolymerElement {
-
-    /** Upon creation get the WASM loaded and compiling.
-    */
-    connectedCallback(){
-      super.connectedCallback();
-      let script = document.createElement('script');
-      script.src = "libwasmaudio.js";
-      document.head.appendChild(script);
-    }
-
-    /** Create and return an audio script node which is setup to process events.
-    Upon completion :
-    this.audioProcessorNode is the ScriptProcessorNode setup to handle events
-    \param frameCount The number of audio frames in the processing buffer
-    \param inCh The number of input audio channels
-    \param outCh The number of output audio channels
-    */
-    createScriptProcessorNode(frameCount, inCh, outCh){
-      this.audioProcessorNode = this.context.createScriptProcessor(frameCount, inCh, outCh);
-      this.audioProcessorNode.onaudioprocess = this.process.bind(this);
-      return audioProcessorNode;
-    }
-
-    /** malloc a WASM heap based on an audio matrix size. If the audio buffer
-    channel count or frame count is changed, then free and malloc again.
-    We remember size here to check if the heap frame count is different.
-    \param audioMatrix Array[Array[Float32Array]]
-    \param heapName For example 'inBufs'
-    */
-    mallocHEAP(byteLength, chCnt, heapName){
-      let Nb=byteLength; // number of bytes
-      let M=chCnt; // number of channels
-      let N=M*Nb; // total byte count
-      // resize memory if required
-      if (this[heapName]==null || this[heapName+'Size']!=N){
-        if (this[heapName]!=null)
-        libwasmaudio.free(this[heapName]);
-        this[heapName] = libwasmaudio._malloc(N);
-        this[heapName+'Size']=N;
-      }
-      return Nb;
-    }
-
-    /** Given an audio process event, call the WASM process method and load the output.
-    \param audioProcessingEvent The ScriptProcessorNode onaudioprocess event
-    */
-    process(audioProcessingEvent){
-      let Nb = this.mallocHEAP(audioProcessingEvent.inputBuffer.length<<2, audioProcessingEvent.inputBuffer.numberOfChannels, 'inBufs'); // resize the heap if necessary
-      for (var i=0; i<audioProcessingEvent.inputBuffer.numberOfChannels; i++) // load the AudioWorklet data into the WASM heap
-        libwasmaudio.HEAPF32.subarray((this.inBufs)>>2, (this.inBufs+this.inBufsSize)>>2).set(audioProcessingEvent.inputBuffer.getChannelData(i), i*audioProcessingEvent.inputBuffer.length);
-
-      Nb = this.mallocHEAP(audioProcessingEvent.outputBuffer.length<<2, audioProcessingEvent.outputBuffer.numberOfChannels, 'outBufs'); // resize the heap if necessary
-
-      // process the audio
-      let ret=this.audioProcessor.process(this.inBufs, audioProcessingEvent.inputBuffer.numberOfChannels, audioProcessingEvent.inputBuffer.length, this.outBufs, audioProcessingEvent.outputBuffer.numberOfChannels, audioProcessingEvent.outputBuffer.length);
-      if (ret==true) // if processing was good, load the output audio
-      for (var i=0; i<audioProcessingEvent.outputBuffer.numberOfChannels; i++) // retrieve the AudioWorklet data from the WASM heap
-        audioProcessingEvent.outputBuffer.copyToChannel(libwasmaudio.HEAPF32.subarray((this.outBufs+i*Nb)>>2, (this.outBufs+i*Nb+Nb)>>2), i);
-    }
-
-    /** Method to stop processing.
-    */
-    stop(){
-      if (this.audioProcessorNode != null)
-        this.audioProcessorNode.disconnect();
-    }
+  connectedCallback(){
+    super.connectedCallback();
+    let script = document.createElement('script');
+    script.src = "libwasmaudio.js";
+    document.head.appendChild(script);
   }
-  window.customElements.define('audio-processor', AudioProcessor);
+
+  /** Create and return an audio script node which is setup to process events.
+  Upon completion :
+  this.audioProcessorNode is the ScriptProcessorNode setup to handle events
+  \param frameCount The number of audio frames in the processing buffer
+  \param inCh The number of input audio channels
+  \param outCh The number of output audio channels
+  */
+  createScriptProcessorNode(frameCount, inCh, outCh){
+    this.audioProcessorNode = this.context.createScriptProcessor(frameCount, inCh, outCh);
+    this.audioProcessorNode.onaudioprocess = this.process.bind(this);
+    return this.audioProcessorNode;
+  }
+
+  /** malloc a WASM heap based on an audio matrix size. If the audio buffer
+  channel count or frame count is changed, then free and malloc again.
+  We remember size here to check if the heap frame count is different.
+  \param audioMatrix Array[Array[Float32Array]]
+  \param heapName For example 'inBufs'
+  */
+  mallocHEAP(byteLength, chCnt, heapName){
+    let Nb=byteLength; // number of bytes
+    let M=chCnt; // number of channels
+    let N=M*Nb; // total byte count
+    // resize memory if required
+    if (this[heapName]==null || this[heapName+'Size']!=N){
+      if (this[heapName]!=null)
+      libwasmaudio.free(this[heapName]);
+      this[heapName] = libwasmaudio._malloc(N);
+      this[heapName+'Size']=N;
+    }
+    return Nb;
+  }
+
+  /** Given an audio process event, call the WASM process method and load the output.
+  \param audioProcessingEvent The ScriptProcessorNode onaudioprocess event
+  */
+  process(audioProcessingEvent){
+    let Nb = this.mallocHEAP(audioProcessingEvent.inputBuffer.length<<2, audioProcessingEvent.inputBuffer.numberOfChannels, 'inBufs'); // resize the heap if necessary
+    for (var i=0; i<audioProcessingEvent.inputBuffer.numberOfChannels; i++) // load the AudioWorklet data into the WASM heap
+      libwasmaudio.HEAPF32.subarray((this.inBufs)>>2, (this.inBufs+this.inBufsSize)>>2).set(audioProcessingEvent.inputBuffer.getChannelData(i), i*audioProcessingEvent.inputBuffer.length);
+
+    Nb = this.mallocHEAP(audioProcessingEvent.outputBuffer.length<<2, audioProcessingEvent.outputBuffer.numberOfChannels, 'outBufs'); // resize the heap if necessary
+
+    // process the audio
+    let ret=this.audioProcessor.process(this.inBufs, audioProcessingEvent.inputBuffer.numberOfChannels, audioProcessingEvent.inputBuffer.length, this.outBufs, audioProcessingEvent.outputBuffer.numberOfChannels, audioProcessingEvent.outputBuffer.length);
+    if (ret==true) // if processing was good, load the output audio
+    for (var i=0; i<audioProcessingEvent.outputBuffer.numberOfChannels; i++) // retrieve the AudioWorklet data from the WASM heap
+      audioProcessingEvent.outputBuffer.copyToChannel(libwasmaudio.HEAPF32.subarray((this.outBufs+i*Nb)>>2, (this.outBufs+i*Nb+Nb)>>2), i);
+  }
+
+  /** Method to stop processing.
+  */
+  stop(){
+    if (this.audioProcessorNode != null)
+      this.audioProcessorNode.disconnect();
+  }
+}
+window.customElements.define('audio-processor', AudioProcessor);

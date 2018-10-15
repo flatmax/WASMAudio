@@ -28,49 +28,49 @@ Copyright (c) 2017-2018 The WASM audio Authors. All rights reserved.
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
+import {html} from '@polymer/polymer/polymer-element.js';
+import '@polymer/paper-button';
 
-<link rel="import" href="../paper-button/paper-button.html">
-<link rel="import" href="audio-processor.html">
+import {AudioProcessor} from './audio-processor.js';
 
-    /**
-     * `test-element`
-     * WASM Audio ScriptProcessorNode tester
-     *
-     * @customElement
-     * @polymer
-     * @demo demo/index.html
-     */
-    class TestElement extends AudioProcessor {
+  /**
+   * `test-element`
+   * WASM Audio ScriptProcessorNode tester
+   *
+   * @customElement
+   * @polymer
+   * @demo demo/index.html
+   */
+class TestElement extends AudioProcessor {
   static get template() {
     return html`
-    <paper-button raised on-tap="startAudioProcessing">run script node</paper-button>
+      <paper-button raised on-tap="startAudioProcessing">run script node</paper-button>
     `;
   }
-      /** Start the audio processing using the AudioProcessor WASM code
-      */
-      startAudioProcessing(){
-        if (this.audioProcessor == null)
-          this.audioProcessor = new libwasmaudio.Audio;
-        if (this.context==null)
-          this.context = new AudioContext();
-        // create some oscillators
-        this.oscillator = new OscillatorNode(this.context);
-        this.oscillator2 = new OscillatorNode(this.context);
-        this.oscillator2.frequency.setValueAtTime(1000, this.context.currentTime);
-        // route the oscillators to a stereo stream
-        this.merger =  new ChannelMergerNode(this.context, {'numberOfInputs' : 2});
-        this.oscillator.connect(this.merger, 0, 0) // connect the L + R + destination
-        this.oscillator2.connect(this.merger, 0, 1);
-        // create the ScriptProcessorNode and connect it to the output of the merged oscillators
-        this.createScriptProcessorNode(1024, 3, 2); // this.audioProcessorNode has been created
-        this.merger.connect(this.audioProcessorNode);
-        // connect the ScriptProcessorNode to the output destination
-        this.audioProcessorNode.connect(this.context.destination);
-        // Start the audio system running
-        this.oscillator.start(this.context.currentTime); // start the oscillator
-        this.oscillator2.start(this.context.currentTime); // start the oscillator
-      }
-    }
+  /** Start the audio processing using the AudioProcessor WASM code
+  */
+  startAudioProcessing(){
+    if (this.audioProcessor == null)
+      this.audioProcessor = new libwasmaudio.Audio;
+    if (this.context==null)
+      this.context = new AudioContext();
+    // create some oscillators
+    this.oscillator = new OscillatorNode(this.context);
+    this.oscillator2 = new OscillatorNode(this.context);
+    this.oscillator2.frequency.setValueAtTime(1000, this.context.currentTime);
+    // route the oscillators to a stereo stream
+    this.merger =  new ChannelMergerNode(this.context, {'numberOfInputs' : 2});
+    this.oscillator.connect(this.merger, 0, 0) // connect the L + R + destination
+    this.oscillator2.connect(this.merger, 0, 1);
+    // create the ScriptProcessorNode and connect it to the output of the merged oscillators
+    this.createScriptProcessorNode(1024, 3, 2); // this.audioProcessorNode has been created
+    this.merger.connect(this.audioProcessorNode);
+    // connect the ScriptProcessorNode to the output destination
+    this.audioProcessorNode.connect(this.context.destination);
+    // Start the audio system running
+    this.oscillator.start(this.context.currentTime); // start the oscillator
+    this.oscillator2.start(this.context.currentTime); // start the oscillator
+  }
+}
 
 window.customElements.define('test-element', TestElement);
