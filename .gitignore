@@ -27,3 +27,4 @@ a.out.js.mem
 contest.*
 confdefs.h
 bower_components
+node_modules
