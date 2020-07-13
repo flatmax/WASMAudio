@@ -28,15 +28,15 @@
 
 lib_LTLIBRARIES = libwasmaudio.la
 
-libwasmaudio_la_SOURCES = Test.C Audio.C
+libwasmaudio_la_SOURCES = Audio.C
 libwasmaudio_la_CPPFLAGS = -I$(top_srcdir)/include $(EIGEN_CFLAGS)
 libwasmaudio_la_LDFLAGS =  -version-info $(LT_CURRENT) -release $(LT_RELEASE)
 
 if HAVE_EMSCRIPTEN
 all-local: libwasmaudio.la
-	@emcc --bind -s TOTAL_MEMORY=32MB --llvm-lto 1 --memory-init-file 0 $(AM_CXXFLAGS) .libs/libwasmaudio.so -o .libs/libwasmaudio.js
+	@emcc --bind -s TOTAL_MEMORY=32MB --llvm-opts 1 --memory-init-file 0 $(AM_CXXFLAGS) .libs/libwasmaudio.so -o .libs/libwasmaudio.js
 	mv .libs/libwasmaudio.js .libs/libwasmaudio.node
-	@emcc --bind --llvm-lto 1 --memory-init-file 0 -s MODULARIZE_INSTANCE=1 -s "MODULARIZE=1" -s EXPORT_NAME="'libwasmaudio'" -s SINGLE_FILE=1 -s "BINARYEN_METHOD='native-wasm'" -s WASM=1 -s ALLOW_MEMORY_GROWTH=1 -s BINARYEN_ASYNC_COMPILATION=0 -s ASSERTIONS=0 $(AM_CXXFLAGS) -O1 --pre-js ../js/pre.js --post-js ../js/AudioProcessor.js .libs/libwasmaudio.so -o .libs/libwasmaudio.js
+	@emcc --bind --llvm-opts 1 --memory-init-file 0 -s MODULARIZE=1 -s EXPORT_NAME="'libwasmaudio'" -s SINGLE_FILE=1 -s "BINARYEN_METHOD='native-wasm'" -s WASM=1 -s ALLOW_MEMORY_GROWTH=1 -s BINARYEN_ASYNC_COMPILATION=0 -s ASSERTIONS=0 $(AM_CXXFLAGS) -O1 --pre-js ../js/pre.js --post-js ../js/AudioProcessor.js .libs/libwasmaudio.so -o .libs/libwasmaudio.js
 install-exec-hook:
 	cp .libs/libwasmaudio.js $(DESTDIR)$(libdir)
 clean-local:

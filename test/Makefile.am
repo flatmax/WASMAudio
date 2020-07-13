@@ -26,8 +26,8 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-noinst_PROGRAMS = RunTest
+noinst_PROGRAMS =
 
-RunTest_SOURCES = RunTest.C
-RunTest_CPPFLAGS = -I$(top_srcdir)/include
-RunTest_LDADD =  $(top_builddir)/src/libwasmaudio.la
+# RunTest_SOURCES = RunTest.C
+# RunTest_CPPFLAGS = -I$(top_srcdir)/include
+# RunTest_LDADD =  $(top_builddir)/src/libwasmaudio.la
