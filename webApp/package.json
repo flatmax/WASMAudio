@@ -1,0 +1,15 @@
+{
+  "name": "test-element",
+  "version": "1.0.0",
+  "description": "WASM Test class tester",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@material/mwc-button": "^0.17.2",
+    "lit-element": "^2.3.1"
+  }
+}
