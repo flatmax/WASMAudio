@@ -27,6 +27,5 @@ a.out.js.mem
 contest.*
 confdefs.h
 bower_components
-a.out*
-cert.pem
-key.pem
+node_modules
+package-lock.json
