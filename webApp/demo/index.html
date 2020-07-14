@@ -36,25 +36,12 @@ Copyright (c) 2017-2018 The WASM audio Authors. All rights reserved.
 
     <title>test-element demo</title>
 
-    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
-
-    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
-    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
-    <link rel="import" href="../test-element.html">
-
-    <custom-style>
-      <style is="custom-style" include="demo-pages-shared-styles">
-      </style>
-    </custom-style>
+    <script type="module">
+      import '../test-element';
+    </script>
   </head>
   <body>
-    <div class="vertical-section-container centered">
-      <h3>Basic test-element demo</h3>
-      <demo-snippet>
-        <template>
-          <test-element></test-element>
-        </template>
-      </demo-snippet>
-    </div>
+    <h3>Basic test-element demo</h3>
+    <test-element></test-element>
   </body>
 </html>
