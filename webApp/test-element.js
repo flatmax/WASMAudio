@@ -30,7 +30,7 @@ class TestElement extends LitElement {
       audioWorkletNode.connect(merger, 1, 1).connect(this.context.destination);
       oscillator.start(); // start the oscillator
       oscillator2.start(); // start the oscillator
-    });
+    }).catch(err => {console.log('error when opening '); console.log(err)});
   }
 }
 
