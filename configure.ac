@@ -33,7 +33,7 @@ m4_define([wasm_audio_version], [wasm_audio_current_version.wasm_audio_revision_
 
 AC_INIT( wasm_audio, [wasm_audio_version], [ https://github.com/madChopsCoderAu/WASMAudio/issues ])
 AM_INIT_AUTOMAKE
-AC_CONFIG_SRCDIR([include/Test.H])
+AC_CONFIG_SRCDIR([include/Audio.H])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
 AC_PREFIX_DEFAULT(/usr)
