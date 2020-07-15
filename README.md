@@ -2,6 +2,12 @@
 
 Example project for processing AudioWorklet audio in WASM code.
 
+# Prerequisites
+
+This project uses the Eigen headers : http://eigen.tuxfamily.org
+The Eigen package allows the handling of audio in matrices and is a powerful
+numerical processing in C++ tool.
+
 # Building
 ## Initial Setup
 
@@ -40,4 +46,3 @@ polymer serve
 
 The original mad chops coder AU
 ![mad chops coder AU icon](https://raw.githubusercontent.com/flatmax/WASMAudio/master/madChopsCoderAu.png)
-
