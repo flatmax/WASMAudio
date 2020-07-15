@@ -21,7 +21,7 @@ class TestElement extends LitElement {
       let oscillator = new OscillatorNode(this.context);
       let oscillator2 = new OscillatorNode(this.context);
       oscillator2.frequency.setValueAtTime(1000, this.context.currentTime);
-      let audioWorkletNode = new AudioWorkletNode(this.context, 'audio-processor', { 'numberOfInputs': 3, 'numberOfOutputs': 2 });
+      let audioWorkletNode = new AudioWorkletNode(this.context, 'audio-processor', { 'numberOfInputs': 2, 'numberOfOutputs': 2 });
       let merger = new ChannelMergerNode(this.context, { 'numberOfInputs': 2 });
       // connect the oscillator to the AudioWorkletNode WASM audio processor
       oscillator.connect(audioWorkletNode, 0, 0);
