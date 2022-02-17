@@ -17,7 +17,7 @@ class TestElement extends LitElement {
   runAudioWorklet() {
     if (this.context == null)
       this.context = new AudioContext();
-    this.context.audioWorklet.addModule('AudioProcessor.js').then(() => {
+    this.context.audioWorklet.addModule('../AudioProcessor.js').then(() => {
       let oscillator = new OscillatorNode(this.context);
       let oscillator2 = new OscillatorNode(this.context);
       oscillator2.frequency.setValueAtTime(1000, this.context.currentTime);
