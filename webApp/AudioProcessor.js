@@ -35,19 +35,6 @@ class AudioProcessor extends AudioWorkletProcessor {
   \param paramteres The AudioWorklet parameters (currently unused)
   */
   process(inputs, outputs, parameters) {
-    // console.log('AudioProcessor::process');
-    // let Nb = this.mallocHEAP(inputs, 'inBufs'); // resize the heap if necessary
-    // for (var i=0; i<inputs.length; i++) // load the AudioWorklet data into the WASM heap
-    //   HEAPF32.subarray((this.inBufs)>>2, (this.inBufs+this.inBufsSize)>>2).set(inputs[i][0], i*inputs[i][0].length);
-    //
-    // Nb = this.mallocHEAP(outputs, 'outBufs'); // resize the heap if necessary
-    //
-    // // process the audio
-    // let ret=this.audioProcessor.process(this.inBufs, inputs.length, inputs[0][0].length, this.outBufs, outputs.length, outputs[0][0].length);
-    // if (ret==true) // if processing was good, load the output audio
-    //   for (var i=0; i<outputs.length; i++) // retrieve the AudioWorklet data from the WASM heap
-    //     outputs[i][0].set(HEAPF32.subarray((this.outBufs+i*Nb)>>2, (this.outBufs+i*Nb+Nb)>>2));
-    // return ret;
     return true;
   }
 }
