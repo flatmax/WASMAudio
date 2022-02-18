@@ -35,6 +35,7 @@ class AudioProcessor extends AudioWorkletProcessor {
   \param paramteres The AudioWorklet parameters (currently unused)
   */
   process(inputs, outputs, parameters) {
+    // copy inputs to outputs
     return true;
   }
 }

@@ -26,22 +26,13 @@ class TestElement extends LitElement {
     if (this.context == null)
       this.context = new AudioContext();
 
-    let media = this.context.createMediaElementSource(this.audioElem)
-    media.connect(this.context.destination)
-    // this.context.audioWorklet.addModule('../AudioProcessor.js').then(() => {
-      // let oscillator = new OscillatorNode(this.context);
-      // let oscillator2 = new OscillatorNode(this.context);
-      // oscillator2.frequency.setValueAtTime(1000, this.context.currentTime);
-      // let audioWorkletNode = new AudioWorkletNode(this.context, 'audio-processor', { 'numberOfInputs': 2, 'numberOfOutputs': 2 });
-      // let merger = new ChannelMergerNode(this.context, { 'numberOfInputs': 2 });
-      // connect the oscillator to the AudioWorkletNode audio processor
-      // oscillator.connect(audioWorkletNode, 0, 0);
-      // oscillator2.connect(audioWorkletNode, 0, 1);
-      // audioWorkletNode.connect(merger, 0, 0) // connect the L + R + destination
-      // audioWorkletNode.connect(merger, 1, 1).connect(this.context.destination);
-      // oscillator.start(); // start the oscillator
-      // oscillator2.start(); // start the oscillator
-    // }).catch(err => {console.log('error when opening '); console.log(err)});
+    this.context.audioWorklet.addModule('../AudioProcessor.js').then(() => {
+      let media = this.context.createMediaElementSource(this.audioElem);
+      let audioWorkletNode = new AudioWorkletNode(this.context, 'audio-processor');
+      media.connect(audioWorkletNode);
+      audioWorkletNode.connect(this.context.destination);
+      this.context.resume();
+    }).catch(err => {console.log('error when opening '); console.log(err)});
   }
 }
 
