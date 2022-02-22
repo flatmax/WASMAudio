@@ -36,6 +36,9 @@ class AudioProcessor extends AudioWorkletProcessor {
   */
   process(inputs, outputs, parameters) {
     // copy inputs to outputs
+    for (let c=0; c<inputs[0].length; c++) {
+      outputs[0][c].set(inputs[0][c])
+    }
     return true;
   }
 }
