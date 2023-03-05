@@ -4,7 +4,8 @@ This project exemplifies webassembly (WASM) audio processing.
 If provides both the C++ backend and the webapp.
 
 It has two branches :
-ScriptProcessorNode - The soon to be depreciated method for processing audio in the browser
+ScriptProcessorNode - The soon to be depreciated method for processing audio in the browser.
+
 AudioWorklet - The Worklet approach to processing audio in the browser.
 
 To use :
@@ -55,4 +56,3 @@ polymer serve
 
 The original mad chops coder AU
 ![mad chops coder AU icon](https://raw.githubusercontent.com/flatmax/WASMAudio/master/madChopsCoderAu.png)
-
