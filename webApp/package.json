@@ -1,10 +1,11 @@
 {
-  "name": "test-element",
+  "name": "wasmaudio-webapp",
   "version": "1.0.0",
-  "description": "WASM Test class tester",
+  "description": "WASMAudio Web Application",
   "main": "index.js",
   "scripts": {
-    "start": "polymer serve -P https/1.1 --hostname 0.0.0.0",
+    "start": "web-dev-server --node-resolve --watch --open --app-index demo/index.html",
+    "build": "rollup -c",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -12,5 +13,10 @@
   "dependencies": {
     "@material/mwc-button": "^0.17.2",
     "lit-element": "^2.3.1"
+  },
+  "devDependencies": {
+    "@web/dev-server": "^0.3.0",
+    "@rollup/plugin-node-resolve": "^15.0.0",
+    "rollup": "^4.0.0"
   }
 }
