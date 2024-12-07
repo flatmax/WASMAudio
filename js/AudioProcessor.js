@@ -32,7 +32,8 @@ AudioWorkletProcessor.
 class AudioProcessor extends AudioWorkletProcessor {
   constructor(){
     super();
-    this.audioProcessor = new libwasmaudio.Audio;
+    // this.audioProcessor = new libwasmaudio.Audio;
+    this.audioProcessor = new Module.Audio;
   }
 
   /** malloc a WASM heap based on an audio matrix size. If the audio buffer
@@ -48,8 +49,8 @@ class AudioProcessor extends AudioWorkletProcessor {
     // resize memory if required
     if (this[heapName]==null || this[heapName+'Size']!=N){
       if (this[heapName]!=null)
-        libwasmaudio.free(this[heapName]);
-      this[heapName] = libwasmaudio._malloc(N);
+        Module.free(this[heapName]);
+      this[heapName] = Module._malloc(N);
       this[heapName+'Size']=N;
     }
     return Nb;
