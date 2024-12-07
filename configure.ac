@@ -75,6 +75,16 @@ if test "x$HAVE_EIGEN" == xyes ; then
     AC_DEFINE(HAVE_EIGEN, [], [whether to build in Eigen support])
 fi
 
+# gtkiostream
+#PKG_CHECK_MODULES([GTKIOSTREAM], [gtkIOStream],,  AC_MSG_ERROR("gtkiostream is required for building this code"))
+PKG_CHECK_MODULES([GTKIOSTREAM], [gtkIOStream], HAVE_GTKIOSTREAM="yes",  HAVE_GTKIOSTREAM="no")
+AC_SUBST([GTKIOSTREAM_CFLAGS])
+AC_SUBST([GTKIOSTREAM_LIBS])
+AM_CONDITIONAL(HAVE_GTKIOSTREAM, test x$HAVE_ALSA = xyes)
+if test "x$HAVE_GTKIOSTREAM" == xyes ; then
+    AC_DEFINE(HAVE_GTKIOSTREAM, [], [whether to build in gtkIOStream support])
+fi
+
 AC_C_INLINE
 AC_FUNC_ERROR_AT_LINE
 
