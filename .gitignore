@@ -28,3 +28,6 @@ contest.*
 confdefs.h
 bower_components
 node_modules
+package-lock.json
+a.out*
+*.pem

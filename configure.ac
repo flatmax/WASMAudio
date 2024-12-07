@@ -33,7 +33,7 @@ m4_define([wasm_audio_version], [wasm_audio_current_version.wasm_audio_revision_
 
 AC_INIT( wasm_audio, [wasm_audio_version], [ https://github.com/madChopsCoderAu/WASMAudio/issues ])
 AM_INIT_AUTOMAKE
-AC_CONFIG_SRCDIR([include/Test.H])
+AC_CONFIG_SRCDIR([include/Audio.H])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
 AC_PREFIX_DEFAULT(/usr)
@@ -62,7 +62,7 @@ AM_COND_IF([HAVE_DOXYGEN], [AC_CONFIG_FILES([api/Doxyfile])])
 m4_ifdef([AM_EMSCRIPTEN], [AM_EMSCRIPTEN])
 AM_CONDITIONAL(HAVE_EMSCRIPTEN, test x$emscripten_compiler = xyes)
 if test "x$emscripten_compiler" = xyes; then
-AC_SUBST([AM_CXXFLAGS], ["-s DEMANGLE_SUPPORT=1 -std=c++11 -O3 -fno-exceptions -s NO_EXIT_RUNTIME=1 "])
+AC_SUBST([AM_CXXFLAGS], ["-s DEMANGLE_SUPPORT=1 -std=c++11 -O3 -fno-exceptions -s NO_EXIT_RUNTIME=1 --bind -s EXPORTED_FUNCTIONS='["_malloc"]'"])
 AC_DEFINE(HAVE_EMSCRIPTEN, [], [whether building for emsdk])
 fi
 

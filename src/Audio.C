@@ -57,6 +57,7 @@ bool Audio::process(intptr_t input, unsigned int Min, unsigned int Nin, intptr_t
   return true;
 }
 
+
 #include "config.h"
 #ifdef HAVE_EMSCRIPTEN
 #include <emscripten/bind.h>

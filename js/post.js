@@ -26,9 +26,4 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#include "Test.H"
-
-int main(int argc, char *argv[]){
-  Test test; // test the construction and destruction of the Test class.
-  return 0;
-}
+// libwasmaudio();

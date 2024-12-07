@@ -1,14 +1,22 @@
 {
-  "name": "test-element",
-  "description": "WASM AudioWorklet tester",
-  "main": "test-element.js",
+  "name": "wasmaudio-webapp",
+  "version": "1.0.0",
+  "description": "WASMAudio Web Application",
+  "main": "index.js",
+  "scripts": {
+    "start": "web-dev-server --node-resolve --watch --open --app-index demo/index.html",
+    "build": "rollup -c",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
   "dependencies": {
-    "@polymer/paper-button": "^3.0.1",
-    "@polymer/polymer": "^3.0.0"
+    "@material/mwc-button": "^0.17.2",
+    "lit-element": "^2.3.1"
   },
   "devDependencies": {
-    "@polymer/iron-demo-helpers": "^3.0.0-pre.19",
-    "@webcomponents/webcomponentsjs": "^2.0.0",
-    "wct-browser-legacy": "^1.0.0"
+    "@web/dev-server": "^0.3.0",
+    "@rollup/plugin-node-resolve": "^15.0.0",
+    "rollup": "^4.0.0"
   }
 }

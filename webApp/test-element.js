@@ -28,35 +28,31 @@ Copyright (c) 2017-2018 The WASM audio Authors. All rights reserved.
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
-import '@polymer/paper-button';
+import { LitElement, html } from 'lit-element';
+import '@material/mwc-button';
 
-/**
- * `test-element`
- * WASM AudioWorklet tester
- *
- * @customElement
- * @polymer
- * @demo demo/index.html
- */
-class TestElement extends PolymerElement {
-  static get template() {
-    return html`
-    	<paper-button raised on-tap="runAudioWorklet">run worklet</paper-button>
-    `;
+class TestElement extends LitElement {
+  render() {
+    return html`<mwc-button raised @click="${this.runAudioWorklet}">run worklet</mwc-button>`;
+  }
+
+  static get properties() {
+    return {
+      context: { type: Object }
+    }
   }
 
   /** Run the audio worklet processor
   */
-  runAudioWorklet(){
-    if (this.context==null)
+  runAudioWorklet() {
+    if (this.context == null)
       this.context = new AudioContext();
     this.context.audioWorklet.addModule('libwasmaudio.js').then(() => {
       let oscillator = new OscillatorNode(this.context);
       let oscillator2 = new OscillatorNode(this.context);
       oscillator2.frequency.setValueAtTime(1000, this.context.currentTime);
-      let audioWorkletNode = new AudioWorkletNode(this.context, 'audio-processor', {'numberOfInputs' : 3, 'numberOfOutputs' : 2 });
-      let merger =  new ChannelMergerNode(this.context, {'numberOfInputs' : 2});
+      let audioWorkletNode = new AudioWorkletNode(this.context, 'audio-processor', { 'numberOfInputs': 2, 'numberOfOutputs': 2 });
+      let merger = new ChannelMergerNode(this.context, { 'numberOfInputs': 2 });
       // connect the oscillator to the AudioWorkletNode WASM audio processor
       oscillator.connect(audioWorkletNode, 0, 0);
       oscillator2.connect(audioWorkletNode, 0, 1);
@@ -64,7 +60,7 @@ class TestElement extends PolymerElement {
       audioWorkletNode.connect(merger, 1, 1).connect(this.context.destination);
       oscillator.start(); // start the oscillator
       oscillator2.start(); // start the oscillator
-    });
+    }).catch(err => {console.log('error when opening '); console.log(err)});
   }
 }
 

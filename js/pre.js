@@ -26,5 +26,28 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+// Check if `atob` is missing and polyfill it
+if (typeof atob === 'undefined') {
+    var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
+    
+    var atob = function(input) {
+      let str = input.replace(/=+$/, '');
+      let output = '';
+  
+      if (str.length % 4 == 1) {
+        throw new Error("'atob' failed: The string to be decoded is not correctly encoded.");
+      }
+  
+      for (let bc = 0, bs = 0, buffer, idx = 0; 
+           (buffer = str.charAt(idx++)); 
+           ~buffer && (bs = bc % 4 ? bs * 64 + buffer : buffer, bc++ % 4) ?
+             output += String.fromCharCode(255 & bs >> (-2 * bc & 6)) : 0) {
+        buffer = chars.indexOf(buffer);
+      }
+  
+      return output;
+    };
+  }
+  
 Module['ENVIRONMENT'] = 'WORKER';
 Module['onRuntimeInitialized'] = function(){console.log('WASM initalised')};
