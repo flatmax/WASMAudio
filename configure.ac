@@ -62,7 +62,7 @@ AM_COND_IF([HAVE_DOXYGEN], [AC_CONFIG_FILES([api/Doxyfile])])
 m4_ifdef([AM_EMSCRIPTEN], [AM_EMSCRIPTEN])
 AM_CONDITIONAL(HAVE_EMSCRIPTEN, test x$emscripten_compiler = xyes)
 if test "x$emscripten_compiler" = xyes; then
-AC_SUBST([AM_CXXFLAGS], ["-s DEMANGLE_SUPPORT=1 -std=c++11 -O3 -fno-exceptions -s NO_EXIT_RUNTIME=1 "])
+AC_SUBST([AM_CXXFLAGS], ["-s DEMANGLE_SUPPORT=1 -std=c++11 -O3 -fno-exceptions -s NO_EXIT_RUNTIME=1 --bind "])
 AC_DEFINE(HAVE_EMSCRIPTEN, [], [whether building for emsdk])
 fi
 
